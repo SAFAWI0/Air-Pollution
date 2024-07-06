@@ -1,20 +1,28 @@
+import img1 from "./src/assets/a.jpg";
+import img2 from "./src/assets/b.jpg";
+import img3 from "./src/assets/c.jpg";
+
 export const Items = [
   {
     name: "Caz",
     value: "20.5",
     symbol: "ppm",
+    img: img1,
   },
   {
     name: "Dustcm",
     value: "150",
     symbol: "µg/m³",
+    img: img2,
   },
   {
     name: "Temp",
     value: "22.3",
     symbol: "°C",
+    img: img3,
   },
 ];
+
 
 export const sensorData = [
   {
@@ -46,7 +54,6 @@ export const finalScores = [
   {
     dayNum: 1,
     value: 200,
-   
   },
   {
     dayNum: 1,

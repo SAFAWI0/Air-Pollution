@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Container from "../Container/container";
 import { SearchOutlined } from "@ant-design/icons";
 import { Items, finalScores, sensorData } from "../../../fake";
+
 import {
   CartesianGrid,
   Line,
@@ -64,21 +65,23 @@ export const Card = () => {
   return (
     <div className=" mt-20 ">
       <Container>
-        <div className="flex items-center justify-between my-12 w-1/2 mx-auto">
-          {Items.map((item, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center bg-gray-600 py-6 px-8 text-white shadow-xl space-y-4 rounded-lg mx-4"
-            >
-              <span className="text-lg">{item.name}</span>
-              <div className="flex items-center">
-                <p className="text-2xl font-bold mr-2">{item.value}</p>
-                <span className="text-sm">{item.symbol}</span>
-              </div>
-              <span className="text-xs">{item.water_percentage}</span>
-            </div>
-          ))}
-        </div>
+      <div className="flex justify-center gap-8">
+  {Items.map((item, i) => (
+    <div
+      key={i}
+      className="flex flex-col items-center bg-gray-600 py-8 px-8 text-white shadow-xl space-y-4 rounded-lg w-40 mb-8"
+    >
+      <span className="text-lg">{item.name}</span>
+      <div className="flex items-center">
+        <p className="text-2xl font-bold mr-2">{item.value}</p>
+        <span className="text-sm ">{item.symbol}</span>
+      </div>
+      <img src={item.img} className="mt-6"></img>
+     
+    </div>
+  ))}
+</div>
+
 
         <div className=" w-1/3 mx-auto bg-red-500 text-center py-4 rounded-lg shadow-xl">
           <p className="text-white ">Air Quality Status</p>
@@ -167,9 +170,13 @@ export const Card = () => {
         </div>
 
         <div className="chart">
-          <p className="lg:text-lg px-8 mx-auto mb-10 text-center">
-            بامكانك من هنا متابعة مستوى تقدمك عبر تسجيل النقاط التي تحصل عليها
-          </p>
+          <div className="flex justify-center items-center mt-14">
+            <p className="text-lg text-gray-800 mb-8">
+              <span className="text-black shadow-black">
+                مخطط بياني يوضح تفاصيل دقيقة للتلوث الهواء
+              </span>
+            </p>
+          </div>
 
           <div className="flex flex-col justify-center items-center mt-4 rounded-lg">
             <div className="w-full overflow-auto flex flex-col items-center">
