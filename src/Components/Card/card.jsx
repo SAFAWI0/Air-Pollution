@@ -1,16 +1,11 @@
 import { useState } from "react";
 import Container from "../Container/container";
 import { SearchOutlined } from "@ant-design/icons";
+import { Items, sensorData } from "../../../fake";
 
 export const Card = () => {
   const [value, setValue] = useState();
   const [search, setSearch] = useState("");
-
-  const currentItems = [
-    { id: 1, no: "A123", user_id: "U001", status: "Pending" },
-    { id: 2, no: "B456", user_id: "U002", status: "Shipped" },
-    { id: 3, no: "C789", user_id: "U003", status: "Delivered" },
-  ];
 
   const handleInputChange = () => {
     setSearch(value);
@@ -19,19 +14,21 @@ export const Card = () => {
     <div className="card">
       <Container>
         <div className="flex items-center justify-between my-12 w-1/2 mx-auto">
-          <div className="flex flex-col items-center bg-gray-600  py-8 px-12 text-white shadow-xl space-y-4 rounded-lg">
-            <span>Caz</span>
-            <p className="text-xl">100%</p>
-          </div>
-          <div className="flex flex-col items-center bg-gray-600 py-8 px-12 text-white shadow-xl space-y-4 rounded-lg">
-            <span className="">Dustcm</span>
-            <p className="text-xl">100%</p>
-          </div>
-          <div className="flex flex-col items-center bg-gray-600 py-8 px-12 text-white shadow-xl space-y-4 rounded-lg">
-            <span>Temp</span>
-            <p className="text-xl">100%</p>
-          </div>
+          {Items.map((item, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center bg-gray-600 py-6 px-8 text-white shadow-xl space-y-4 rounded-lg mx-4"
+            >
+              <span className="text-lg">{item.name}</span>
+              <div className="flex items-center">
+                <p className="text-2xl font-bold mr-2">{item.value}</p>
+                <span className="text-sm">{item.symbol}</span>
+              </div>
+              <span className="text-xs">{item.water_percentage}</span>
+            </div>
+          ))}
         </div>
+
         <div className=" w-1/3 mx-auto bg-red-500 text-center py-4 rounded-lg shadow-xl">
           <p className="text-white ">Air Quality Status</p>
           <p className="text-xl bold text-white">100%</p>
@@ -86,7 +83,7 @@ export const Card = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item, i) => (
+              {sensorData.map((item, i) => (
                 <tr
                   key={i}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -97,11 +94,11 @@ export const Card = () => {
                   >
                     {item.id}
                   </th>
-                  <td className="px-6 py-4">{item.no}</td>
-                  <td className="px-6 py-4">{item.user_id}</td>
-                  <td className="px-6 py-4">{item.status}</td>
-                  <td className="px-6 py-4">{item.status}</td>
-                  <td className="px-6 py-4">{item.status}</td>
+                  <td className="px-6 py-4">{item.city}</td>
+                  <td className="px-6 py-4">{item.dustcm} µg/m³</td>
+                  <td className="px-6 py-4">{item.temp} °C</td>
+                  <td className="px-6 py-4">{item.caz} ppm</td>
+                  <td className="px-6 py-4">{item.action}</td>
                 </tr>
               ))}
             </tbody>
