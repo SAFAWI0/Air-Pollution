@@ -1,17 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../Container/container";
 import { SearchOutlined } from "@ant-design/icons";
-import { Items, sensorData } from "../../../fake";
+import { Items, finalScores, sensorData } from "../../../fake";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 export const Card = () => {
-  const [value, setValue] = useState();
-  const [search, setSearch] = useState("");
+  const [cities, setCities] = useState([]);
+  const [read, setRead] = useState([]);
+  const [selectedCityId, setSelectedCityId] = useState(null);
 
-  const handleInputChange = () => {
-    setSearch(value);
+  const getData = async () => {
+    try {
+      const response = await fetch(
+        "https://localhost:7090/api/City/GetAllCities"
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setCities(result);
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
   };
+
+  const getRead = async (cityId) => {
+    try {
+      const response = await fetch(
+        `https://localhost:7090/api/Read/GetReadsByCityId?cityId=${cityId}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setRead(result);
+    } catch (error) {
+      console.error("Error fetching readings:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCityId) {
+      getRead(selectedCityId);
+    }
+  }, [selectedCityId]);
+
+  const handleCityChange = (event) => {
+    const cityId = event.target.value;
+    setSelectedCityId(cityId);
+  };
+  console.log(read);
   return (
-    <div className="card">
+    <div className=" mt-20 ">
       <Container>
         <div className="flex items-center justify-between my-12 w-1/2 mx-auto">
           {Items.map((item, i) => (
@@ -36,54 +87,49 @@ export const Card = () => {
 
         <hr className="my-12" />
 
-        <div className="flex justify-center items-center ">
-          <div className="search-box flex border border-white bg-gray-600 rounded-lg overflow-hidden items-center h-9 w-64">
-            <input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="ابحث عن المنطقة"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  setSearch(value);
-                }
-              }}
-              className="outline-none border-none w-full bg-gray-600 text-lg text-end pr-2 text-white placeholder-white"
-            />
-            <button
-              onClick={handleInputChange}
-              className="border-none bg-transparent cursor-pointer px-2"
+        <div className="flex justify-center items-center gap-20">
+          <div className="select-container mb-4">
+            <select
+              className="w-full border border-gray-300 py-2 px-4 rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+              onChange={handleCityChange}
             >
-              <SearchOutlined className="text-lg text-white" />
-            </button>
+              <option value="">Select a City</option>
+              {cities.map((city, index) => (
+                <option key={index} value={city.id}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   ID
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  City
-                </th>
+
                 <th scope="col" className="px-6 py-3">
                   Dustcm
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Temp
                 </th>
-                <th scope="col" className="px-8 py-3">
+                <th scope="col" className="px-6 py-3">
                   Cazs
                 </th>
-                <th scope="col" className="px-8 py-3">
+                <th scope="col" className="px-6 py-3">
+                  Quality
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              {sensorData.map((item, i) => (
+              {read.map((item, i) => (
                 <tr
                   key={i}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -92,24 +138,55 @@ export const Card = () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {item.id}
+                    {i + 1}
                   </th>
-                  <td className="px-6 py-4">{item.city}</td>
-                  <td className="px-6 py-4">{item.dustcm} µg/m³</td>
-                  <td className="px-6 py-4">{item.temp} °C</td>
-                  <td className="px-6 py-4">{item.caz} ppm</td>
-                  <td className="px-6 py-4">{item.action}</td>
+
+                  <td className="px-6 py-4 dark:text-white">
+                    {item.dcm} µg/m³
+                  </td>
+                  <td className="px-6 py-4 dark:text-white">
+                    {item.tempDeg} °C
+                  </td>
+                  <td className="px-6 py-4 dark:text-white">
+                    {item.gazPercentage} ppm
+                  </td>
+                  <td className="px-6 py-4 dark:text-white">{item.quality}</td>
+                  <td className="px-6 py-4 dark:text-white">
+                    {item.quality < 50
+                      ? "Air Quality Status Poor"
+                      : item.quality < 100
+                      ? "Air Quality Status Moderate"
+                      : item.quality === 100
+                      ? "Air Quality Status Excellent"
+                      : "Unknown Air Quality Status"}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="select-container">
-          <select>
-            <option value="option1"> Baghdad </option>
-            <option value="option2">Baghdad</option>
-            <option value="option3">Baghdad</option>
-          </select>
+
+        <div className="chart">
+          <p className="lg:text-lg px-8 mx-auto mb-10 text-center">
+            بامكانك من هنا متابعة مستوى تقدمك عبر تسجيل النقاط التي تحصل عليها
+          </p>
+
+          <div className="flex flex-col justify-center items-center mt-4 rounded-lg">
+            <div className="w-full overflow-auto flex flex-col items-center">
+              <LineChart
+                width={700}
+                height={350}
+                data={finalScores}
+                margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+              >
+                <Line type="monotone" dataKey="value" stroke="#3366CC" />
+                <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                <XAxis dataKey="dayNum" />
+                <YAxis domain={[0, 300]} />
+                <Tooltip />
+              </LineChart>
+            </div>
+          </div>
         </div>
       </Container>
     </div>

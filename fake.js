@@ -42,3 +42,26 @@ export const sensorData = [
     action: "High ",
   },
 ];
+export const finalScores = [
+  {
+    dayNum: 1,
+    value: 200,
+   
+  },
+  {
+    dayNum: 1,
+    value: 100,
+  },
+  {
+    dayNum: 1,
+    value: 150,
+  },
+  {
+    dayNum: 1,
+    value: 300,
+  },
+  {
+    dayNum: 1,
+    value: 400,
+  },
+];
