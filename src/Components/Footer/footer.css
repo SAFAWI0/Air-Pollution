@@ -1,0 +1,31 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  padding: 8px;
+  background-color: #0000004f;
+  backdrop-filter: blur(5px);
+}
+.footer .content-footer button{
+  border: none;
+  background-color: transparent;
+}
+.footer .content-footer .icon {
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.footer .content-footer .icon:focus {
+  color: rgb(133, 133, 133);
+}
+.footer .content-footer .icon:hover {
+  color: rgb(133, 133, 133);
+}
+.footer .content-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
