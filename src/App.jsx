@@ -1,13 +1,11 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import { HomeScreen } from "./Screens/HomeScreen/homeScreen";
+import { Card } from "./Components/Card/card";
+import { Header } from "./Components/Header/header";
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-      </Routes>
+      <Header />
+      <Card />
     </div>
   );
 }
