@@ -3,13 +3,6 @@ import img from "../../assets/pic.jpg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-10">
       <div className="header bg-gray-600">
@@ -26,25 +19,13 @@ const Header = () => {
               </h2>
             </div>
             <div className="nav flex items-center">
-              <Link
-                to="/"
-                className="text-white mx-2 hover:text-blue-200"
-                onClick={() => scrollToSection("real-number-section")}
-              >
+              <Link to="/" className="text-white mx-2 hover:text-blue-200">
                 Real Number
               </Link>
-              <Link
-                to="/"
-                className="text-white mx-2 hover:text-blue-200"
-                onClick={() => scrollToSection("chart-section")}
-              >
+              <Link to="/" className="text-white mx-2 hover:text-blue-200">
                 Chart
               </Link>
-              <Link
-                to="/"
-                className="text-white mx-2 hover:text-blue-200"
-                onClick={() => scrollToSection("table-section")}
-              >
+              <Link to="/" className="text-white mx-2 hover:text-blue-200">
                 Table
               </Link>
             </div>
